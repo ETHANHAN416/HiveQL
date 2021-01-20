@@ -1,0 +1,10 @@
+hive> create table docs(line string);
+
+hive> load data inpath 'file:///usr/local/hadoop/input' overwrite into table docs;
+
+hive> create table word_count as
+    > select word, count(1) as count from
+    > (select explode(split(line,' '))as word from docs) w
+    > group by word
+    > order by word;
+hive> select * from word_count;
